@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+  <title>HTML/CSS Codeplayer</title>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="stylesheet" type="text/css" href="codeplayer.css" />
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+     
+</head>
+
+<body>
+
+	<div id="wrapper">
+		<div id="menubar">
+			<i class="code icon"></i>	
+			<div id="logo">
+					&#60;	/&#62; Code Player
+			</div>
+
+			<div id="buttonDiv">
+				<button id="runButton">Run</button>
+			</div>
+			
+			<ul id="toggles">
+				<li class="toggle selected">HTML</li>
+				<li class="toggle">CSS</li>
+				<li class="toggle" style="display:none">JS</li>
+				<li class="toggle selected" style="border:none">Result</li>
+			</ul>
+			
+		</div>
+		
+		<div class="clear"></div>
+
+		<div class="codeContainer" id="HTMLContainer">
+			<div class="codeLabel">HTML</div>
+			<textarea id="htmlCode"></textarea>
+		</div>
+		
+		<div class="codeContainer" id="CSSContainer">
+			<div class="codeLabel">CSS</div>
+			<textarea id="cssCode"></textarea>
+		</div>
+		
+		<div class="codeContainer" id="JSContainer">
+			<div class="codeLabel">JS</div>
+			<textarea id="jsCode"></textarea> <!--document.getElementById("test").innerHTML="It's working!";-->
+		</div>
+		
+		<div class="codeContainer" id="ResultContainer">
+			<div class="codeLabel">Result</div>
+			<iframe id="resultFrame"></iframe>
+		</div>
+	
+	</div>
+	
+	<script>
+		var windowHeight=$(window).height();
+		var menuBarHeight=$("#menubar").height();
+		var codeContainerHeight=windowHeight-menuBarHeight;
+		
+		$(".codeContainer").height(codeContainerHeight+"px");
+		
+		$(".toggle").click(function() {
+			$(this).toggleClass("selected");
+			var activeDiv=$(this).html();
+			$("#"+activeDiv+"Container").toggle();
+			
+			var showingDivs=$(".codeContainer").filter(function() { /*filter function creates array of active code containers*/
+				return($(this).css("display")!="none"); /*true if div is displayed*/
+			}).length; /*gives number of displayed divs*/
+			
+			var width=100/showingDivs;
+			$(".codeContainer").width(width+"%");
+		});
+		
+		$("#runButton").click(function() {
+			var cssCode = $("#cssCode").val();
+			var htmlCode = $("#htmlCode").val();
+		
+			$("iframe").contents().find("html").html('<style>'+ cssCode + '</style>' + htmlCode);
+			
+			//document.getElementById("resultFrame").contentWindow.eval($("#jsCode").val());
+		
+		});
+	</script>
+
+</body>
+</html>
